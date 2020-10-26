@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'DoB',
+        'sex'
     ];
 
     /**
@@ -40,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function worker()
+    {
+        return $this->hasOne(Worker::class);
+    }
+
+    public function pupil()
+    {
+        return $this->hasOne(Pupil::class);
+    }
 }

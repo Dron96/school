@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pupil extends Model
+class Subject extends Model
 {
     use HasFactory;
 
@@ -15,9 +15,7 @@ class Pupil extends Model
      * @var array
      */
     protected $fillable = [
-        'admission_date',
-        'class',
-        'parallel',
-        'user_id'
+        'name',
+        'teacher_id'
     ];
 }

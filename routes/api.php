@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('register', 'App\Http\Controllers\UserController@register');
+Route::get('users', 'App\Http\Controllers\UserController@index');
+Route::post('/users/{user}/add-to-pupil', 'App\Http\Controllers\UserController@setRoleAsPupil');
+Route::post('/users/{user}/add-to-worker', 'App\Http\Controllers\UserController@setRoleAsWorker');
+
+Route::post('/subjects', 'App\Http\Controllers\SubjectController@store');
