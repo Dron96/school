@@ -22,5 +22,7 @@ Route::post('register', 'App\Http\Controllers\UserController@register');
 Route::get('users', 'App\Http\Controllers\UserController@index');
 Route::post('/users/{user}/add-to-pupil', 'App\Http\Controllers\UserController@setRoleAsPupil');
 Route::post('/users/{user}/add-to-worker', 'App\Http\Controllers\UserController@setRoleAsWorker');
+Route::get('/users/{user}', 'App\Http\Controllers\UserController@show');
 
 Route::post('/subjects', 'App\Http\Controllers\SubjectController@store');
+Route::post('/schedules', 'App\Http\Controllers\ScheduleController@addSubjectToSchedule');
