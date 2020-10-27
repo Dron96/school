@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddUserToPupilRequest;
 use App\Http\Requests\AddUserToWorkerRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Pupil;
 use App\Models\User;
 use App\Models\Worker;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
@@ -27,7 +28,7 @@ class UserController extends Controller
     /**
      * Регистрация нового пользователя
      *
-     * @param Request $request
+     * @param RegisterRequest $request
      * @return Response
      */
     public function register(RegisterRequest $request)
@@ -47,9 +48,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
+     * @param AddUserToPupilRequest $request
      * @param User $user
      * @return void
      */
@@ -57,13 +56,12 @@ class UserController extends Controller
     {
         $validatedData = $request->validated();
         $validatedData['user_id'] = $user->id;
+
         return Pupil::create($validatedData);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
+     * @param AddUserToWorkerRequest $request
      * @param User $user
      * @return void
      */
@@ -71,17 +69,33 @@ class UserController extends Controller
     {
         $validatedData = $request->validated();
         $validatedData['user_id'] = $user->id;
+
         return Worker::create($validatedData);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param User $user
+     * @return string
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return 'Пользователь успешно удален';
+    }
+
+    /**
+     * @param UpdateUserRequest $request
+     * @param User $user
+     * @return User
+     */
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        $user->update($request->validated());
+
+        return $user;
     }
 }

@@ -17,11 +17,12 @@ class CreateSchedulesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('subject_id');
             $table->unsignedInteger('class');
-            $table->char('parallel');
+            $table->char('parallel', 1);
             $table->dateTime('start_lesson');
             $table->timestamps();
 
-            $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->foreign('subject_id')->references('id')->on('subjects')
+                ->onDelete('Cascade');
         });
     }
 

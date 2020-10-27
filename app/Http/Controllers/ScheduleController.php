@@ -3,68 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddSubjectToScheduleRequest;
+use App\Http\Requests\ScheduleUpdateRequest;
 use App\Models\Schedule;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ScheduleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Schedule[]|Collection|Response
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return Schedule::all();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Schedule $schedule
+     * @return Schedule|Builder[]|Collection
      */
-    public function show($id)
+    public function show(Schedule $schedule)
     {
-        //
+        return $schedule->with('subject')->get();
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ScheduleUpdateRequest $request
+     * @param Schedule $schedule
+     * @return Schedule
      */
-    public function update(Request $request, $id)
+    public function update(ScheduleUpdateRequest $request, Schedule $schedule)
     {
-        //
+        $schedule->update($request->validated());
+
+        return $schedule;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Schedule $schedule
+     * @return string
      */
-    public function destroy($id)
+    public function destroy(Schedule $schedule)
     {
-        //
+        $schedule->delete();
+
+        return 'Предмет успешно удален из расписания';
     }
 
+    /**
+     * @param AddSubjectToScheduleRequest $request
+     * @return mixed
+     */
     public function addSubjectToSchedule(AddSubjectToScheduleRequest $request)
     {
-        return Schedule::create($request->validated());
+        $data = $request->validated();
+        $data['start_lesson'] = Carbon::createFromFormat('d.m.Y H:i', $request->get('start_lesson'))
+            ->format('Y-m-d H:i');
+        return Schedule::create($data);
     }
 }

@@ -18,4 +18,9 @@ class Subject extends Model
         'name',
         'teacher_id'
     ];
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }

@@ -20,9 +20,26 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('register', 'App\Http\Controllers\UserController@register');
 Route::get('users', 'App\Http\Controllers\UserController@index');
-Route::post('/users/{user}/add-to-pupil', 'App\Http\Controllers\UserController@setRoleAsPupil');
-Route::post('/users/{user}/add-to-worker', 'App\Http\Controllers\UserController@setRoleAsWorker');
-Route::get('/users/{user}', 'App\Http\Controllers\UserController@show');
+Route::prefix('/users/{user}')->group(function () {
+    Route::post('/add-to-pupil', 'App\Http\Controllers\UserController@setRoleAsPupil');
+    Route::post('/add-to-worker', 'App\Http\Controllers\UserController@setRoleAsWorker');
+    Route::get('/', 'App\Http\Controllers\UserController@show');
+    Route::delete('/', 'App\Http\Controllers\UserController@destroy');
+    Route::put('/', 'App\Http\Controllers\UserController@update');
+});
 
-Route::post('/subjects', 'App\Http\Controllers\SubjectController@store');
-Route::post('/schedules', 'App\Http\Controllers\ScheduleController@addSubjectToSchedule');
+Route::prefix('/subjects')->group(function () {
+    Route::post('/', 'App\Http\Controllers\SubjectController@store');
+    Route::get('/', 'App\Http\Controllers\SubjectController@index');
+    Route::get('/{subject}', 'App\Http\Controllers\SubjectController@show');
+    Route::put('/{subject}', 'App\Http\Controllers\SubjectController@update');
+    Route::delete('/{subject}', 'App\Http\Controllers\SubjectController@destroy');
+});
+
+Route::prefix('/schedules')->group(function () {
+    Route::post('/', 'App\Http\Controllers\ScheduleController@addSubjectToSchedule');
+    Route::get('/', 'App\Http\Controllers\ScheduleController@index');
+    Route::get('/{schedule}', 'App\Http\Controllers\ScheduleController@show');
+    Route::delete('/{schedule}', 'App\Http\Controllers\ScheduleController@destroy');
+    Route::put('/{schedule}', 'App\Http\Controllers\ScheduleController@update');
+});
