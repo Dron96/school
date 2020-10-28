@@ -19,7 +19,7 @@ class CreateWorkersTable extends Migration
             $table->date('dismissal_date')->after('employment_date')->nullable();
             $table->string('role');
             $table->timestamps();
-            $table->unsignedBigInteger('user_id');
+            $table->integer('user_id');
 
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('Cascade');

@@ -6,10 +6,8 @@ use App\Http\Requests\AddSubjectToScheduleRequest;
 use App\Http\Requests\ScheduleUpdateRequest;
 use App\Models\Schedule;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ScheduleController extends Controller

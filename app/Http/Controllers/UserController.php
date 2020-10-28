@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddUserToPupilRequest;
 use App\Http\Requests\AddUserToWorkerRequest;
+use App\Http\Requests\GetClassRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Pupil;
 use App\Models\User;
 use App\Models\Worker;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 
@@ -52,10 +54,9 @@ class UserController extends Controller
      * @param User $user
      * @return void
      */
-    public function setRoleAsPupil(AddUserToPupilRequest $request, User $user)
+    public function setRoleAsPupil(AddUserToPupilRequest $request)
     {
         $validatedData = $request->validated();
-        $validatedData['user_id'] = $user->id;
 
         return Pupil::create($validatedData);
     }
@@ -65,10 +66,9 @@ class UserController extends Controller
      * @param User $user
      * @return void
      */
-    public function setRoleAsWorker(AddUserToWorkerRequest $request, User $user)
+    public function setRoleAsWorker(AddUserToWorkerRequest $request)
     {
         $validatedData = $request->validated();
-        $validatedData['user_id'] = $user->id;
 
         return Worker::create($validatedData);
     }
@@ -97,5 +97,35 @@ class UserController extends Controller
         $user->update($request->validated());
 
         return $user;
+    }
+
+    /**
+     * @return Builder[]|Collection
+     */
+    public function getAllWorker()
+    {
+        return Worker::with('user')->get();
+    }
+
+    /**
+     * @return Builder[]|Collection
+     */
+    public function getAllPupils()
+    {
+        return Pupil::with('user')->get();
+    }
+
+    /**
+     * @param GetClassRequest $request
+     * @return mixed
+     */
+    public function getPupilsFromClass(GetClassRequest $request)
+    {
+        $class = $request->validated();
+
+        return Pupil::where('class', $class['class'])
+            ->where('parallel', $class['parallel'])
+            ->with('user')
+            ->get();
     }
 }

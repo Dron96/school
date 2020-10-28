@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddUserToPupilRequest extends FormRequest
+class GetClassRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class AddUserToPupilRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer|exists:users,id|unique:pupils,user_id|unique:workers,user_id',
-            'admission_date' => 'required|date_format:d.m.Y',
-            'class' => 'integer|required|min:0|max:11',
-            'parallel' => 'required|size:1|string',
+            'class' => 'required|integer|min:0|max:11',
+            'parallel' => 'required|size:1|string'
         ];
     }
 }

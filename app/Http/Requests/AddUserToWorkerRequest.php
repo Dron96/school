@@ -30,7 +30,8 @@ class AddUserToWorkerRequest extends FormRequest
                 Rule::in(['Учитель', 'Завуч', 'Директор'])
             ],
             'employment_date' => 'required|date_format:d.m.Y',
-            'dismissal_date' => 'required|date_format:d.m.Y|after:employment_date|nullable'
+            'dismissal_date' => 'required|date_format:d.m.Y|after:employment_date|nullable',
+            'user_id' => 'required|integer|exists:users,id|unique:workers,user_id|unique:pupils,user_id',
         ];
     }
 }

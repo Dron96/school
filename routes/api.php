@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,14 +20,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('register', 'App\Http\Controllers\UserController@register');
-Route::get('users', 'App\Http\Controllers\UserController@index');
-Route::prefix('/users/{user}')->group(function () {
+
+Route::prefix('/users')->group(function () {
+    Route::get('/', 'App\Http\Controllers\UserController@index');
+    Route::get('/workers', 'App\Http\Controllers\UserController@getAllWorker');
+    Route::get('/pupils', 'App\Http\Controllers\UserController@getAllPupils');
+    Route::get('/class', 'App\Http\Controllers\UserController@getPupilsFromClass');
     Route::post('/add-to-pupil', 'App\Http\Controllers\UserController@setRoleAsPupil');
     Route::post('/add-to-worker', 'App\Http\Controllers\UserController@setRoleAsWorker');
-    Route::get('/', 'App\Http\Controllers\UserController@show');
-    Route::delete('/', 'App\Http\Controllers\UserController@destroy');
-    Route::put('/', 'App\Http\Controllers\UserController@update');
+    Route::prefix('/{user}')->group(function () {
+        Route::get('/', 'App\Http\Controllers\UserController@show');
+        Route::delete('/', 'App\Http\Controllers\UserController@destroy');
+        Route::put('/', 'App\Http\Controllers\UserController@update');
+    });
 });
+
 
 Route::prefix('/subjects')->group(function () {
     Route::post('/', 'App\Http\Controllers\SubjectController@store');
