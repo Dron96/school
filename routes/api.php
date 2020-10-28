@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +34,12 @@ Route::prefix('/users')->group(function () {
     });
 });
 
+Route::put('workers/{worker}', 'App\Http\Controllers\UserController@dismissWorker');
+Route::get('workers/{worker}/schedule', 'App\Http\Controllers\UserController@getWorkerSchedule');
+Route::get('workers/{worker}/marks', 'App\Http\Controllers\MarkController@getTeacherMarks');
+Route::put('pupils/{pupil}', 'App\Http\Controllers\UserController@changeClassForPupil');
+Route::get('pupils/{pupil}/marks', 'App\Http\Controllers\MarkController@getPupilMarks');
+Route::get('class/schedule', 'App\Http\Controllers\ScheduleController@getClassSchedule');
 
 Route::prefix('/subjects')->group(function () {
     Route::post('/', 'App\Http\Controllers\SubjectController@store');
@@ -42,6 +47,7 @@ Route::prefix('/subjects')->group(function () {
     Route::get('/{subject}', 'App\Http\Controllers\SubjectController@show');
     Route::put('/{subject}', 'App\Http\Controllers\SubjectController@update');
     Route::delete('/{subject}', 'App\Http\Controllers\SubjectController@destroy');
+    Route::get('/{subject}/marks', 'App\Http\Controllers\MarkController@getSubjectMarks');
 });
 
 Route::prefix('/schedules')->group(function () {
@@ -50,4 +56,13 @@ Route::prefix('/schedules')->group(function () {
     Route::get('/{schedule}', 'App\Http\Controllers\ScheduleController@show');
     Route::delete('/{schedule}', 'App\Http\Controllers\ScheduleController@destroy');
     Route::put('/{schedule}', 'App\Http\Controllers\ScheduleController@update');
+});
+
+Route::prefix('/marks')->group(function () {
+    Route::post('/', 'App\Http\Controllers\MarkController@store');
+    Route::get('/', 'App\Http\Controllers\MarkController@index');
+    Route::get('/class', 'App\Http\Controllers\MarkController@getClassMarks');
+    Route::get('/{mark}', 'App\Http\Controllers\MarkController@show');
+    Route::delete('/{mark}', 'App\Http\Controllers\MarkController@destroy');
+    Route::put('/{mark}', 'App\Http\Controllers\MarkController@update');
 });

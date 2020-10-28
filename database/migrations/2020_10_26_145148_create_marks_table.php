@@ -17,11 +17,15 @@ class CreateMarksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('pupil_id');
             $table->unsignedBigInteger('teacher_id');
+            $table->integer('mark');
+            $table->unsignedBigInteger('subject_id');
             $table->timestamps();
 
             $table->foreign('pupil_id')->references('id')->on('users')
                 ->onDelete('Cascade');
             $table->foreign('teacher_id')->references('id')->on('users')
+                ->onDelete('Cascade');
+            $table->foreign('subject_id')->references('id')->on('subjects')
                 ->onDelete('Cascade');
         });
     }

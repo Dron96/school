@@ -30,4 +30,14 @@ class Worker extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function subjects()
+    {
+        return $this->hasMany(Subject::class, 'teacher_id');
+    }
+
+    public function marks()
+    {
+        return $this->hasMany(Mark::class, 'teacher_id');
+    }
 }

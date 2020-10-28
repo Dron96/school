@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class AddUserToWorkerRequest extends FormRequest
+class ClassRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +24,8 @@ class AddUserToWorkerRequest extends FormRequest
     public function rules()
     {
         return [
-            'role' => [
-                'required',
-                Rule::in(['Учитель', 'Завуч', 'Директор'])
-            ],
-            'employment_date' => 'required|date_format:d.m.Y',
-            'user_id' => 'required|integer|exists:users,id|unique:workers,user_id|unique:pupils,user_id',
+            'class' => 'required|integer|min:0|max:11',
+            'parallel' => 'required|size:1|string'
         ];
     }
 }

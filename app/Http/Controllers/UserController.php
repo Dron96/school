@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddUserToPupilRequest;
 use App\Http\Requests\AddUserToWorkerRequest;
-use App\Http\Requests\GetClassRequest;
+use App\Http\Requests\ClassRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Pupil;
@@ -116,10 +116,10 @@ class UserController extends Controller
     }
 
     /**
-     * @param GetClassRequest $request
+     * @param ClassRequest $request
      * @return mixed
      */
-    public function getPupilsFromClass(GetClassRequest $request)
+    public function getPupilsFromClass(ClassRequest $request)
     {
         $class = $request->validated();
 
@@ -127,5 +127,24 @@ class UserController extends Controller
             ->where('parallel', $class['parallel'])
             ->with('user')
             ->get();
+    }
+
+    public function dismissWorker(Worker $worker)
+    {
+        $worker->update(['dismissal_date' => now()]);
+
+        return $worker;
+    }
+
+    public function changeClassForPupil(ClassRequest $request, Pupil $pupil)
+    {
+        $pupil->update($request->validated());
+
+        return $pupil;
+    }
+
+    public function getWorkerSchedule(Worker $worker)
+    {
+        return $worker->subjects()->with('schedules')->get();
     }
 }

@@ -23,4 +23,14 @@ class Subject extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function worker()
+    {
+        return $this->belongsTo(Worker::class, 'teacher_id');
+    }
+
+    public function marks()
+    {
+        return $this->hasMany(Mark::class);
+    }
 }

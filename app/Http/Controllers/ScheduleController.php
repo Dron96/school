@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddSubjectToScheduleRequest;
+use App\Http\Requests\ClassRequest;
 use App\Http\Requests\ScheduleUpdateRequest;
 use App\Models\Schedule;
+use App\Models\Subject;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -70,5 +72,15 @@ class ScheduleController extends Controller
         $data['start_lesson'] = Carbon::createFromFormat('d.m.Y H:i', $request->get('start_lesson'))
             ->format('Y-m-d H:i');
         return Schedule::create($data);
+    }
+
+    public function getClassSchedule(ClassRequest $request)
+    {
+        $subjects = Schedule::where('class', $request->class)
+            ->where('parallel', $request->parallel)
+            ->with('subject')
+            ->get();
+
+        return $subjects;
     }
 }
