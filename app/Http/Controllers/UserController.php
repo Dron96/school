@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddUserToPupilRequest;
 use App\Http\Requests\AddUserToWorkerRequest;
 use App\Http\Requests\ClassRequest;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Pupil;
@@ -13,7 +14,9 @@ use App\Models\Worker;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -35,7 +38,45 @@ class UserController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        return User::create($request->validated());
+        $data = $request->validated();
+        $data['password'] = bcrypt($data['password']);
+
+        return User::create($data);
+    }
+
+    /**
+     * Авторизация пользователя
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
+    public function login(LoginRequest $request)
+    {
+        if (!auth()->attempt($request->validated())) {
+            return response()->json([
+                'errors' => 'Адрес электронной почты или пароль неправильные',
+            ], 401);
+        }
+        $token = Auth::user()->createToken('authToken');
+
+        return response()->json([
+            'user' => auth()->user(),
+            'access_token' => $token->accessToken,
+        ], 200);
+    }
+
+    /**
+     * Выход из пользователя
+     *
+     * @return JsonResponse
+     */
+    public function logout()
+    {
+        Auth::user()->token()->revoke();
+
+        return response()->json([
+            'message' => 'Вы успешно вышли',
+        ], 200);
     }
 
     /**
@@ -51,7 +92,6 @@ class UserController extends Controller
 
     /**
      * @param AddUserToPupilRequest $request
-     * @param User $user
      * @return void
      */
     public function setRoleAsPupil(AddUserToPupilRequest $request)
@@ -63,7 +103,6 @@ class UserController extends Controller
 
     /**
      * @param AddUserToWorkerRequest $request
-     * @param User $user
      * @return void
      */
     public function setRoleAsWorker(AddUserToWorkerRequest $request)

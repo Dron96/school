@@ -6,7 +6,6 @@ use App\Http\Requests\AddSubjectToScheduleRequest;
 use App\Http\Requests\ClassRequest;
 use App\Http\Requests\ScheduleUpdateRequest;
 use App\Models\Schedule;
-use App\Models\Subject;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

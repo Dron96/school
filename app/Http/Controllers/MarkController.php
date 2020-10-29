@@ -12,7 +12,6 @@ use App\Models\Worker;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class MarkController extends Controller
@@ -52,8 +51,8 @@ class MarkController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param MarkUpdateRequest $request
+     * @param Mark $mark
      * @return Mark
      */
     public function update(MarkUpdateRequest $request, Mark $mark)
