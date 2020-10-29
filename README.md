@@ -7,6 +7,9 @@
 ### Структура базы данных
 ![Иллюстрация к проекту](./School.png)
 
+### Ссылка на коллекцию Postman
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/e7b9102aa388df0a55ff)
+
 ### Методы
 |Описание|Метод и адрес|Параметры|Доступ|
 |--------|:-----------:|---------|:----:|
